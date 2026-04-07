@@ -1,155 +1,323 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8" />
-  <title>TFT AI Chat</title>
+  <title>TFT AI</title>
 
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #ffffff;
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
       height: 100vh;
     }
 
+    .header {
+      padding: 12px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: 600;
+    }
+
     .chat-container {
-      width: 400px;
-      height: 600px;
-      background: #1e293b;
-      border-radius: 12px;
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .chat {
+      width: 100%;
+      max-width: 700px;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-    }
-
-    .chat-header {
-      padding: 12px;
-      background: #020617;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .chat-box {
-      flex: 1;
-      padding: 10px;
-      overflow-y: auto;
+      gap: 12px;
     }
 
     .message {
-      margin: 8px 0;
-      padding: 10px;
+      padding: 12px 16px;
       border-radius: 10px;
       max-width: 80%;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      line-height: 1.5;
     }
 
     .user {
-      background: #3b82f6;
       align-self: flex-end;
+      background: #2563eb;
+      color: white;
     }
 
     .bot {
-      background: #334155;
       align-self: flex-start;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .input-area {
+      border-top: 1px solid #e5e7eb;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
     }
 
     .input-box {
+      width: 100%;
+      max-width: 700px;
       display: flex;
-      padding: 10px;
-      background: #020617;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    input {
-      flex: 1;
-      padding: 8px;
-      border-radius: 6px;
-      border: none;
+    textarea {
+      width: 100%;
+      resize: none;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #111827;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     button {
-      margin-left: 8px;
-      padding: 8px 12px;
+      padding: 8px 14px;
       border: none;
-      background: #22c55e;
+      border-radius: 8px;
+      background: #111827;
       color: white;
-      border-radius: 6px;
       cursor: pointer;
     }
 
     button:hover {
-      background: #16a34a;
+      background: #374151;
+    }
+
+    .upload-btn {
+      background: #6b7280;
+    }
+
+    .upload-btn:hover {
+      background: #4b5563;
+    }
+
+    .typing {
+      font-style: italic;
+      opacity: 0.7;
+    }
+
+    .left-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .right-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .file-btn {
+      cursor: pointer;
+      font-size: 18px;
+      padding: 6px 8px;
+      border-radius: 6px;
+    }
+
+    .file-btn:hover {
+      background: #f3f4f6;
+    }
+
+    .file-name {
+      font-size: 12px;
+      color: #c70e08;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   </style>
 </head>
 
 <body>
 
-<div class="chat-container">
-  <div class="chat-header">🎮 TFT AI</div>
+  <div class="header">🎮 TFT AI Assistant</div>
 
-  <div id="chatBox" class="chat-box"></div>
-
-  <div class="input-box">
-    <input id="input" placeholder="Hỏi gì đó..." />
-    <button onclick="sendMessage()">Gửi</button>
+  <div class="chat-container">
+    <div id="chat" class="chat"></div>
   </div>
-</div>
 
-<script>
-  const API_URL = "http://127.0.0.1:8000/ask";
+  <div class="input-area">
+    <div class="input-box">
 
-  function addMessage(text, type) {
-    const chatBox = document.getElementById("chatBox");
+      <textarea id="input" rows="2" placeholder="Hỏi về đội hình, item..."></textarea>
 
-    const msg = document.createElement("div");
-    msg.className = "message " + type;
-    msg.innerText = text;
+      <div class="actions">
+        <div class="left-actions">
+          <label for="imageInput" class="file-btn">📎</label>
+          <span id="fileName" class="file-name"></span>
+          <input type="file" id="imageInput" hidden />
+        </div>
 
-    chatBox.appendChild(msg);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
+        <div class="right-actions">
+          <button onclick="sendImage()">📷</button>
+          <button onclick="sendMessage()">Gửi</button>
+        </div>
+      </div>
 
-  async function sendMessage() {
-    const input = document.getElementById("input");
-    const text = input.value;
+    </div>
+  </div>
 
-    if (!text) return;
+  <script>
+    const ASK_API = "/ask";
+    const IMAGE_API = "/analyze-image";
 
-    addMessage(text, "user");
-    input.value = "";
+    function addMessage(text, type) {
+      const chat = document.getElementById("chat");
 
-    addMessage("Đang suy nghĩ...", "bot");
+      const msg = document.createElement("div");
+      msg.className = "message " + type;
+      msg.innerText = text;
 
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ question: text })
-      });
-
-      const data = await res.json();
-
-      // xoá dòng "đang suy nghĩ"
-      document.querySelectorAll(".bot").forEach((el) => {
-        if (el.innerText === "Đang suy nghĩ...") el.remove();
-      });
-
-      addMessage(data.answer || "Không có trả lời", "bot");
-
-    } catch (err) {
-      addMessage("Lỗi kết nối server", "bot");
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
     }
-  }
 
-  // Enter để gửi
-  document.getElementById("input").addEventListener("keypress", function(e) {
-    if (e.key === "Enter") sendMessage();
-  });
-</script>
+    function showTyping() {
+      const chat = document.getElementById("chat");
+
+      const msg = document.createElement("div");
+      msg.className = "message bot typing";
+      msg.id = "typing";
+      msg.innerText = "AI đang suy nghĩ...";
+
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function removeTyping() {
+      const el = document.getElementById("typing");
+      if (el) el.remove();
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("input");
+      const text = input.value;
+
+      if (!text) return;
+
+      addMessage(text, "user");
+      input.value = "";
+
+      showTyping();
+
+      try {
+        const res = await fetch(ASK_API, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ question: text })
+        });
+
+        const data = await res.json();
+
+        removeTyping();
+        typeEffect(data.answer || "Không có trả lời");
+
+      } catch (err) {
+        removeTyping();
+        addMessage("Lỗi server", "bot");
+      }
+    }
+
+    async function sendImage() {
+      const file = document.getElementById("imageInput").files[0];
+
+      if (!file) {
+        alert("Chọn ảnh trước");
+        return;
+      }
+
+      addMessage("📷 Đang gửi ảnh...", "user");
+      showTyping();
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await fetch(IMAGE_API, {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await res.json();
+
+        removeTyping();
+
+        const text =
+          "📊 Game State:\n" +
+          JSON.stringify(data.game_state, null, 2) +
+          "\n\n🔥 Strategy:\n" +
+          data.strategy;
+
+        typeEffect(text);
+
+      } catch (err) {
+        removeTyping();
+        addMessage("Lỗi upload ảnh", "bot");
+      }
+    }
+
+    // 🔥 typing effect giống ChatGPT
+    function typeEffect(text) {
+      const chat = document.getElementById("chat");
+
+      const msg = document.createElement("div");
+      msg.className = "message bot";
+      chat.appendChild(msg);
+
+      let i = 0;
+      function typing() {
+        if (i < text.length) {
+          msg.innerText += text.charAt(i);
+          i++;
+          setTimeout(typing, 10);
+        }
+      }
+
+      typing();
+    }
+
+    document.getElementById("input").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
+    const imageInput = document.getElementById("imageInput");
+    const fileName = document.getElementById("fileName");
+
+    imageInput.addEventListener("change", () => {
+      if (imageInput.files.length > 0) {
+        fileName.innerText = imageInput.files[0].name;
+      } else {
+        fileName.innerText = "";
+      }
+    });
+  </script>
 
 </body>
+
 </html>

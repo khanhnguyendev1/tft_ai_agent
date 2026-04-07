@@ -13,7 +13,7 @@ api_key = os.getenv("GOOGLE_API_KEY")
 
 print("DEBUG API KEY:", api_key)
 
-genai.configure(api_key="AIzaSyDX51sBU11niTsEAGI8wWzILDZ66Z792bI")
+genai.configure(api_key="***")
 
 model = genai.GenerativeModel("gemini-2.5-flash")
 
