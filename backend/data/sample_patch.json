@@ -1,0 +1,63 @@
+[
+  {
+    "type": "comp",
+    "name": "Sorcerer Ahri",
+    "tier": "S",
+    "description": "Ahri carry với Blue Buff và Jeweled Gauntlet. Slow roll level 7."
+  },
+  {
+    "type": "comp",
+    "name": "Duelist Yasuo",
+    "tier": "A",
+    "description": "Yasuo carry với Guinsoo và Bloodthirster."
+  },
+  {
+    "type": "strategy",
+    "name": "Pivot",
+    "tier": "S",
+    "description": "Nên pivot khi không ra carry chính, item không phù hợp hoặc bị contest nhiều."
+  },
+  {
+    "type": "strategy",
+    "name": "Slow Roll",
+    "tier": "A",
+    "description": "Giữ 50 vàng, roll ở level 7 để roll 3-cost carry."
+  },
+  {
+    "type": "strategy",
+    "name": "Fast 8",
+    "tier": "A",
+    "description": "Lên thẳng level 8 để roll 4-cost carry."
+  },
+  {
+    "type": "strategy",
+    "name": "Itemization",
+    "tier": "S",
+    "description": "Ưu tiên Blue Buff, Jeweled Gauntlet, Guinsoo, Bloodthirster."
+  },
+  {
+    "type": "item",
+    "name": "Blue Buff",
+    "tier": "S",
+    "description": "Tăng mana regen, tốt cho reroll và spam skill."
+  },
+  {
+    "type": "item",
+    "name": "Jeweled Gauntlet",
+    "tier": "S",
+    "description": "Tăng crit damage, kết hợp tốt với Ahri."
+  },
+  {
+    "type": "item",
+    "name": "Guinsoo's Rageblade",
+    "tier": "A",
+    "description": "Tăng attack speed mỗi đòn đánh, tốt cho carry đánh tay."
+  },
+  {
+    "type": "item",
+    "name": "Bloodthirster",
+    "tier": "A",
+    "description": "Hút máu và tăng damage, tốt cho Yasuo."
+  }
+  
+]

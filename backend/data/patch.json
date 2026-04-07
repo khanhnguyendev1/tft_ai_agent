@@ -1,0 +1,636 @@
+[
+    {
+        "type": "champion",
+        "name": "Aatrox",
+        "tier": "S",
+        "cost": 5,
+        "traits": [
+            "Slayer",
+            "Noxus"
+        ],
+        "ability": {
+            "name": "Darkin Blade",
+            "description": "Slices enemies in a line, dealing physical damage.",
+            "type": "Active",
+            "damage": 400,
+            "manaCost": 80,
+            "effectArea": "Line"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Ahri",
+        "tier": "S",
+        "cost": 3,
+        "traits": [
+            "Arcanist",
+            "Ixtal"
+        ],
+        "ability": {
+            "name": "Orb of Deception",
+            "description": "Throws an orb forward then back, dealing magic damage.",
+            "type": "Active",
+            "damage": 250,
+            "manaCost": 70,
+            "effectArea": "Line"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Ashe",
+        "tier": "A",
+        "cost": 2,
+        "traits": [
+            "Quickstriker",
+            "Freljord"
+        ],
+        "ability": {
+            "name": "Volley",
+            "description": "Shoots arrows in a cone, hitting enemies.",
+            "type": "Active",
+            "damage": 150,
+            "manaCost": 60,
+            "effectArea": "Cone"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Briar",
+        "tier": "A",
+        "cost": 3,
+        "traits": [
+            "Slayer",
+            "Freljord"
+        ],
+        "ability": {
+            "name": "Bramblespike",
+            "description": "Strikes forward dealing physical damage.",
+            "type": "Active",
+            "damage": 200,
+            "manaCost": 50,
+            "effectArea": "Line"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Caitlyn",
+        "tier": "B",
+        "cost": 1,
+        "traits": [
+            "Longshot",
+            "Piltover"
+        ],
+        "ability": {
+            "name": "Ace in the Hole",
+            "description": "Shoots a bullet at the farthest enemy.",
+            "type": "Active",
+            "damage": 120,
+            "manaCost": 40,
+            "effectArea": "Single Target"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Darius",
+        "tier": "A",
+        "cost": 3,
+        "traits": [
+            "Defender",
+            "Noxus"
+        ],
+        "ability": {
+            "name": "Decimate",
+            "description": "Swings around, dealing damage to nearby enemies.",
+            "type": "Active",
+            "damage": 300,
+            "manaCost": 60,
+            "effectArea": "Circle"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Ekko",
+        "tier": "S",
+        "cost": 3,
+        "traits": [
+            "Disruptor",
+            "Zaun"
+        ],
+        "ability": {
+            "name": "Parallel Convergence",
+            "description": "Creates a zone that slows enemies and deals magic damage.",
+            "type": "Active",
+            "damage": 300,
+            "manaCost": 70,
+            "effectArea": "Circle"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Fiora",
+        "tier": "B",
+        "cost": 1,
+        "traits": [
+            "Duelist",
+            "Demacia"
+        ],
+        "ability": {
+            "name": "Riposte",
+            "description": "Parries an attack and stuns the attacker.",
+            "type": "Active",
+            "damage": 80,
+            "manaCost": 50,
+            "effectArea": "Single Target"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Garen",
+        "tier": "B",
+        "cost": 1,
+        "traits": [
+            "Defender",
+            "Demacia"
+        ],
+        "ability": {
+            "name": "Decisive Strike",
+            "description": "Empowers his next strike and silences the enemy.",
+            "type": "Active",
+            "damage": 100,
+            "manaCost": 60,
+            "effectArea": "Single Target"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Jinx",
+        "tier": "A",
+        "cost": 3,
+        "traits": [
+            "Gunslinger",
+            "Zaun"
+        ],
+        "ability": {
+            "name": "Super Mega Death Rocket",
+            "description": "Fires a rocket that deals damage in an area.",
+            "type": "Active",
+            "damage": 250,
+            "manaCost": 100,
+            "effectArea": "Circle"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Katarina",
+        "tier": "S",
+        "cost": 4,
+        "traits": [
+            "Assassin",
+            "Noxus"
+        ],
+        "ability": {
+            "name": "Death Lotus",
+            "description": "Rapidly spins, dealing magic damage to nearby enemies.",
+            "type": "Active",
+            "damage": 400,
+            "manaCost": 90,
+            "effectArea": "Radius"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Lee Sin",
+        "tier": "A",
+        "cost": 3,
+        "traits": [
+            "Brawler",
+            "Ionia"
+        ],
+        "ability": {
+            "name": "Dragon's Rage",
+            "description": "Kicks enemy, dealing damage and knocking back.",
+            "type": "Active",
+            "damage": 200,
+            "manaCost": 70,
+            "effectArea": "Single Target"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Lux",
+        "tier": "A",
+        "cost": 2,
+        "traits": [
+            "Arcanist",
+            "Demacia"
+        ],
+        "ability": {
+            "name": "Final Spark",
+            "description": "Fires a laser dealing magic damage in a line.",
+            "type": "Active",
+            "damage": 220,
+            "manaCost": 80,
+            "effectArea": "Line"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Nasus",
+        "tier": "A",
+        "cost": 3,
+        "traits": [
+            "Slayer",
+            "Shurima"
+        ],
+        "ability": {
+            "name": "Siphoning Strike",
+            "description": "Deals bonus damage on next attack and heals self.",
+            "type": "Active",
+            "damage": 250,
+            "manaCost": 60,
+            "effectArea": "Single Target"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Orianna",
+        "tier": "B",
+        "cost": 2,
+        "traits": [
+            "Invoker",
+            "Piltover"
+        ],
+        "ability": {
+            "name": "Command: Shockwave",
+            "description": "Pulls enemies toward ball, dealing magic damage.",
+            "type": "Active",
+            "damage": 180,
+            "manaCost": 70,
+            "effectArea": "Circle"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Riven",
+        "tier": "S",
+        "cost": 4,
+        "traits": [
+            "Slayer",
+            "Noxus"
+        ],
+        "ability": {
+            "name": "Blade of the Exile",
+            "description": "Empowers attacks, dealing bonus damage in a line.",
+            "type": "Active",
+            "damage": 350,
+            "manaCost": 80,
+            "effectArea": "Line"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Seraphine",
+        "tier": "A",
+        "cost": 3,
+        "traits": [
+            "Invoker",
+            "Piltover"
+        ],
+        "ability": {
+            "name": "Encore",
+            "description": "Sings, charming enemies and dealing magic damage.",
+            "type": "Active",
+            "damage": 250,
+            "manaCost": 90,
+            "effectArea": "Cone"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Shen",
+        "tier": "B",
+        "cost": 2,
+        "traits": [
+            "Defender",
+            "Ionia"
+        ],
+        "ability": {
+            "name": "Spirit's Refuge",
+            "description": "Blocks all damage from an ally and nearby units.",
+            "type": "Active",
+            "damage": 0,
+            "manaCost": 60,
+            "effectArea": "Single Target"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Teemo",
+        "tier": "B",
+        "cost": 1,
+        "traits": [
+            "Quickstriker",
+            "Bandle City"
+        ],
+        "ability": {
+            "name": "Noxious Trap",
+            "description": "Places a mushroom that explodes on contact.",
+            "type": "Active",
+            "damage": 150,
+            "manaCost": 50,
+            "effectArea": "Circle"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Vayne",
+        "tier": "A",
+        "cost": 3,
+        "traits": [
+            "Duelist",
+            "Demacia"
+        ],
+        "ability": {
+            "name": "Final Hour",
+            "description": "Increases attack speed and stealths briefly.",
+            "type": "Active",
+            "damage": 200,
+            "manaCost": 70,
+            "effectArea": "Self"
+        }
+    },
+    {
+        "type": "champion",
+        "name": "Warwick",
+        "tier": "A",
+        "cost": 2,
+        "traits": [
+            "Slayer",
+            "Zaun"
+        ],
+        "ability": {
+            "name": "Infinite Duress",
+            "description": "Leaps to the lowest health enemy, suppressing and dealing damage.",
+            "type": "Active",
+            "damage": 220,
+            "manaCost": 80,
+            "effectArea": "Single Target"
+        }
+    },
+    {
+        "type": "item",
+        "name": "B.F. Sword",
+        "tier": "C",
+        "description": "Component used to build attack damage items."
+    },
+    {
+        "type": "item",
+        "name": "Recurve Bow",
+        "tier": "C",
+        "description": "Component used to build attack speed items."
+    },
+    {
+        "type": "item",
+        "name": "Needlessly Large Rod",
+        "tier": "C",
+        "description": "Component used to build ability power items."
+    },
+    {
+        "type": "item",
+        "name": "Chain Vest",
+        "tier": "C",
+        "description": "Component used to build defensive items."
+    },
+    {
+        "type": "item",
+        "name": "Giant Slayer",
+        "tier": "A",
+        "description": "Bonus damage to high-health enemies."
+    },
+    {
+        "type": "item",
+        "name": "Guinsoo's Rageblade",
+        "tier": "S",
+        "description": "Grants stacking attack speed on hit."
+    },
+    {
+        "type": "item",
+        "name": "Rabadon's Deathcap",
+        "tier": "S",
+        "description": "Greatly increases ability power."
+    },
+    {
+        "type": "item",
+        "name": "Frozen Heart",
+        "tier": "B",
+        "description": "Reduces attack speed of nearby enemies."
+    },
+    {
+        "type": "trait",
+        "name": "Slayer",
+        "description": "Slayers deal bonus damage and lifesteal."
+    },
+    {
+        "type": "trait",
+        "name": "Defender",
+        "description": "Defenders gain bonus armor."
+    },
+    {
+        "type": "trait",
+        "name": "Gunslinger",
+        "description": "Gunslingers fire additional shots periodically."
+    },
+    {
+        "type": "trait",
+        "name": "Arcanist",
+        "description": "Arcanists gain bonus ability damage."
+    },
+    {
+        "type": "trait",
+        "name": "Quickstriker",
+        "description": "Quickstrikers gain attack speed."
+    },
+    {
+        "type": "trait",
+        "name": "Disruptor",
+        "description": "Disruptors create zones that impair enemies."
+    },
+    {
+        "type": "trait",
+        "name": "Invoker",
+        "description": "Invoker units gain bonus spell damage."
+    },
+    {
+        "type": "comp",
+        "name": "Slayer Core",
+        "tier": "S",
+        "description": "Frontline comp focusing on Slayer carry units and sustain.",
+        "units": [
+            "Aatrox",
+            "Briar",
+            "Nasus",
+            "Riven",
+            "Warwick"
+        ],
+        "items": {
+            "Aatrox": [
+                "Giant Slayer",
+                "Guinsoo's Rageblade"
+            ],
+            "Warwick": [
+                "Guinsoo's Rageblade",
+                "Frozen Heart"
+            ]
+        },
+        "traits": [
+            "Slayer",
+            "Defender"
+        ]
+    },
+    {
+        "type": "comp",
+        "name": "Invoker Burst",
+        "tier": "A",
+        "description": "Mid-range spell comp with strong burst potential.",
+        "units": [
+            "Ahri",
+            "Lux",
+            "Orianna",
+            "Seraphine"
+        ],
+        "items": {
+            "Ahri": [
+                "Rabadon's Deathcap",
+                "Giant Slayer"
+            ],
+            "Seraphine": [
+                "Frozen Heart"
+            ]
+        },
+        "traits": [
+            "Arcanist",
+            "Invoker"
+        ]
+    },
+    {
+        "type": "strategy",
+        "name": "Slow Roll",
+        "tier": "A",
+        "description": "Keep ~50 gold and roll at level 7 for 3-cost carries."
+    },
+    {
+        "type": "strategy",
+        "name": "Fast 8",
+        "tier": "A",
+        "description": "Level to 8 quickly to hit 4-cost carries early."
+    },
+    {
+        "type": "strategy",
+        "name": "Itemization Focus",
+        "tier": "S",
+        "description": "Prioritize Guinsoo, Deathcap, Giant Slayer on main carries."
+    },
+    {
+        "type": "comp",
+        "name": "Duelist Carry",
+        "tier": "A",
+        "description": "Đội hình tốc đánh cao, snowball mạnh.",
+        "units": [
+            "Yasuo",
+            "Fiora",
+            "Vayne",
+            "Lee Sin"
+        ],
+        "items": {
+            "Yasuo": [
+                "Guinsoo's Rageblade",
+                "Bloodthirster"
+            ]
+        },
+        "traits": [
+            "Duelist"
+        ]
+    },
+    {
+        "type": "comp",
+        "name": "Noxus Katarina",
+        "tier": "S",
+        "description": "Katarina reset liên tục, snowball cực mạnh.",
+        "units": [
+            "Katarina",
+            "Darius",
+            "Aatrox"
+        ],
+        "items": {
+            "Katarina": [
+                "Rabadon's Deathcap",
+                "Giant Slayer"
+            ]
+        },
+        "traits": [
+            "Noxus",
+            "Assassin"
+        ]
+    },
+    {
+        "type": "comp",
+        "name": "Zaun Jinx Carry",
+        "tier": "A",
+        "description": "Jinx gây damage diện rộng, mạnh về late.",
+        "units": [
+            "Jinx",
+            "Ekko",
+            "Warwick"
+        ],
+        "items": {
+            "Jinx": [
+                "Guinsoo's Rageblade",
+                "Giant Slayer"
+            ]
+        },
+        "traits": [
+            "Zaun",
+            "Gunslinger"
+        ]
+    },
+    {
+        "type": "comp",
+        "name": "Arcanist Lux",
+        "tier": "A",
+        "description": "Lux burst damage tuyến sau rất mạnh.",
+        "units": [
+            "Lux",
+            "Ahri",
+            "Orianna"
+        ],
+        "items": {
+            "Lux": [
+                "Rabadon's Deathcap",
+                "Blue Buff"
+            ]
+        },
+        "traits": [
+            "Arcanist"
+        ]
+    },
+    {
+        "type": "comp",
+        "name": "Bruiser Lee Sin",
+        "tier": "B",
+        "description": "Đội hình chống chịu tốt, dễ chơi.",
+        "units": [
+            "Lee Sin",
+            "Shen",
+            "Nasus"
+        ],
+        "items": {
+            "Lee Sin": [
+                "Bloodthirster"
+            ]
+        },
+        "traits": [
+            "Brawler",
+            "Defender"
+        ]
+    }
+]

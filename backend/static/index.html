@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>TFT AI Chat</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 400px;
+      height: 600px;
+      background: #1e293b;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 12px;
+      background: #020617;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .chat-box {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+
+    .user {
+      background: #3b82f6;
+      align-self: flex-end;
+    }
+
+    .bot {
+      background: #334155;
+      align-self: flex-start;
+    }
+
+    .input-box {
+      display: flex;
+      padding: 10px;
+      background: #020617;
+    }
+
+    input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      margin-left: 8px;
+      padding: 8px 12px;
+      border: none;
+      background: #22c55e;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="chat-container">
+  <div class="chat-header">🎮 TFT AI</div>
+
+  <div id="chatBox" class="chat-box"></div>
+
+  <div class="input-box">
+    <input id="input" placeholder="Hỏi gì đó..." />
+    <button onclick="sendMessage()">Gửi</button>
+  </div>
+</div>
+
+<script>
+  const API_URL = "http://127.0.0.1:8000/ask";
+
+  function addMessage(text, type) {
+    const chatBox = document.getElementById("chatBox");
+
+    const msg = document.createElement("div");
+    msg.className = "message " + type;
+    msg.innerText = text;
+
+    chatBox.appendChild(msg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById("input");
+    const text = input.value;
+
+    if (!text) return;
+
+    addMessage(text, "user");
+    input.value = "";
+
+    addMessage("Đang suy nghĩ...", "bot");
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ question: text })
+      });
+
+      const data = await res.json();
+
+      // xoá dòng "đang suy nghĩ"
+      document.querySelectorAll(".bot").forEach((el) => {
+        if (el.innerText === "Đang suy nghĩ...") el.remove();
+      });
+
+      addMessage(data.answer || "Không có trả lời", "bot");
+
+    } catch (err) {
+      addMessage("Lỗi kết nối server", "bot");
+    }
+  }
+
+  // Enter để gửi
+  document.getElementById("input").addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendMessage();
+  });
+</script>
+
+</body>
+</html>
