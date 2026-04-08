@@ -150,6 +150,12 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
+    .message img {
+      display: block;
+      max-width: 100%;
+    }
+
   </style>
 </head>
 
@@ -164,7 +170,7 @@
   <div class="input-area">
     <div class="input-box">
 
-      <textarea id="input" rows="2" placeholder="Hỏi về đội hình, item..."></textarea>
+      <textarea id="input" rows="2" placeholder="Hỏi gì đó đi..."></textarea>
 
       <div class="actions">
         <div class="left-actions">
@@ -176,22 +182,58 @@
         <div class="right-actions">
           <button onclick="sendImage()">📷</button>
           <button onclick="sendMessage()">Gửi</button>
+          <button onclick="askGuide()">🎮 Guide</button>
         </div>
       </div>
 
     </div>
   </div>
-
+  <div id="imageModal" style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+">
+    <img id="modalImg" style="max-width:90%; max-height:90%; border-radius:10px;" />
+  </div>
   <script>
     const ASK_API = "/ask";
     const IMAGE_API = "/analyze-image";
 
-    function addMessage(text, type) {
+    const modal = document.getElementById("imageModal");
+
+    modal.onclick = () => {
+      modal.style.display = "none";
+    };
+    function addMessage(content, type, isImage = false) {
       const chat = document.getElementById("chat");
 
       const msg = document.createElement("div");
       msg.className = "message " + type;
-      msg.innerText = text;
+
+      if (isImage) {
+        const img = document.createElement("img");
+        img.src = content;
+        img.style.maxWidth = "200px";
+        img.style.borderRadius = "8px";
+        img.style.cursor = "pointer";
+
+        // 🔥 click để zoom
+        img.onclick = () => {
+          document.getElementById("imageModal").style.display = "flex";
+          document.getElementById("modalImg").src = content;
+        };
+
+        msg.appendChild(img);
+      } else {
+        msg.innerText = content;
+      }
 
       chat.appendChild(msg);
       chat.scrollTop = chat.scrollHeight;
@@ -244,16 +286,39 @@
         addMessage("Lỗi server", "bot");
       }
     }
+    async function askGuide() {
+      addMessage("Tôi mới chơi TFT", "user");
+      showTyping();
+
+      try {
+        const res = await fetch("/guide", {
+          method: "POST"
+        });
+
+        const data = await res.json();
+
+        removeTyping();
+        typeEffect(data.guide);
+
+      } catch (err) {
+        removeTyping();
+        addMessage("Lỗi guide", "bot");
+      }
+    }
 
     async function sendImage() {
-      const file = document.getElementById("imageInput").files[0];
+      const input = document.getElementById("imageInput");
+      const file = input.files[0];
 
       if (!file) {
         alert("Chọn ảnh trước");
         return;
       }
 
-      addMessage("📷 Đang gửi ảnh...", "user");
+      // 🔥 tạo preview NGAY lập tức
+      const imageURL = URL.createObjectURL(file);
+      addMessage(imageURL, "user", true);
+
       showTyping();
 
       const formData = new FormData();
@@ -276,6 +341,10 @@
           data.strategy;
 
         typeEffect(text);
+
+        // reset input
+        input.value = "";
+        document.getElementById("fileName").innerText = "";
 
       } catch (err) {
         removeTyping();
@@ -304,7 +373,10 @@
     }
 
     document.getElementById("input").addEventListener("keypress", function (e) {
-      if (e.key === "Enter") sendMessage();
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
     });
     const imageInput = document.getElementById("imageInput");
     const fileName = document.getElementById("fileName");

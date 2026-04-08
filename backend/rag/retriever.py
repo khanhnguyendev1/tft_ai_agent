@@ -18,30 +18,39 @@ def retrieve(query):
     query_embedding = embedding_model.encode(query).tolist()
     query_lower = query.lower()
 
-    # 🎯 detect intent
-    if any(x in query_lower for x in ["đội hình", "comp"]):
-        filter_type = "comp"
-        n = 5
+    # 🔥 detect tên tướng
+    keywords = ["jinx", "yasuo", "lux", "warwick", "nasus", "ahri"]
 
-    elif any(x in query_lower for x in ["item", "trang bị", "build"]):
-        filter_type = "item"
-        n = 4
+    matched = [k for k in keywords if k in query_lower]
 
-    else:
-        filter_type = "comp"
-        n = 5
+    if matched:
+        results = collection.query(
+            query_embeddings=[query_embedding],
+            n_results=3,
+            where={"type": "comp"}
+        )
+        return results["documents"][0]
 
+    # hỏi đội hình chung
+    if "đội hình" in query_lower or "comp" in query_lower:
+        results = collection.query(
+            query_embeddings=[query_embedding],
+            n_results=5,
+            where={"type": "comp"}
+        )
+        return results["documents"][0]
+
+    # item
+    if "item" in query_lower or "trang bị" in query_lower:
+        results = collection.query(
+            query_embeddings=[query_embedding],
+            n_results=4
+        )
+        return results["documents"][0]
+
+    # fallback
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=n,
-        where={"type": filter_type}
+        n_results=5
     )
-
-    docs = results.get("documents", [[]])[0]
-
-    # 🔥 format lại cho Gemini
-    formatted_docs = []
-    for i, doc in enumerate(docs):
-        formatted_docs.append(f"[DATA {i+1}] {doc}")
-
-    return formatted_docs
+    return results["documents"][0]

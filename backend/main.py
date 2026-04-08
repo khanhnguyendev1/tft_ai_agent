@@ -47,24 +47,25 @@ async def analyze_image(file: UploadFile = File(...)):
         contents = await file.read()
 
         game_state = parse_tft_image(contents)
-        game_state = clean_game_state(game_state)
 
         if not game_state:
-            return {"error": "Không đọc được dữ liệu từ ảnh"}
+            return {"error": "AI không đọc được ảnh"}
+
+        game_state = clean_game_state(game_state)
 
         question = f"""
-Game state:
+        Game state:
 
-- Level: {game_state.get('level')}
-- Gold: {game_state.get('gold')}
-- Board: {[c.get('name') for c in game_state.get('board', [])]}
-- Items: {game_state.get('items')}
+        Level: {game_state.get('level')}
+        Gold: {game_state.get('gold')}
+        Board: {[c.get('name') for c in game_state.get('board', [])]}
+        Items: {game_state.get('items')}
 
-Nên làm gì để top 4?
-"""
+        Nên làm gì tiếp?
+        """
 
-        docs = retrieve(question) or []
-        context = "\n".join(docs[:4])  # 🔥 FIX
+        docs = retrieve(question)
+        context = "\n".join(docs[:4])
 
         answer = generate_answer(context, question)
 
@@ -72,6 +73,18 @@ Nên làm gì để top 4?
             "game_state": game_state,
             "strategy": answer
         }
+
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.post("/guide")
+def guide_newbie():
+    try:
+        question = "Tôi mới chơi TFT, hãy hướng dẫn tôi từ đầu"
+
+        answer = generate_answer("", question)
+
+        return {"guide": answer}
 
     except Exception as e:
         return {"error": str(e)}
