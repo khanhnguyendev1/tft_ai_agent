@@ -2,6 +2,8 @@ import google.generativeai as genai
 from PIL import Image
 import io
 import json
+import os
+from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ENV_PATH = os.path.join(BASE_DIR, "backend/.env")
