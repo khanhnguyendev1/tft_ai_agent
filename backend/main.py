@@ -6,6 +6,7 @@ from backend.vision.parser import parse_tft_image
 from backend.vision.postprocess import clean_game_state
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from fastapi import Form
 import os
 import uuid
 
@@ -31,7 +32,7 @@ def ask_question(request: QueryRequest):
         context = "\n".join(docs[:4])
 
         answer = generate_answer(context, request.question)
-
+        save_message(request.question, answer)
         return {
             "context_used": docs,
             "answer": answer
@@ -42,32 +43,35 @@ def ask_question(request: QueryRequest):
 
 
 @app.post("/analyze-image")
-async def analyze_image(file: UploadFile = File(...)):
+async def analyze_image(
+    file: UploadFile = File(...),
+    question: str = Form("")
+):
     try:
         contents = await file.read()
 
         game_state = parse_tft_image(contents)
-
-        if not game_state:
-            return {"error": "AI không đọc được ảnh"}
-
         game_state = clean_game_state(game_state)
 
-        question = f"""
-        Game state:
+        # 🔥 build prompt đúng
+        base_prompt = f"""
+Game state:
 
-        Level: {game_state.get('level')}
-        Gold: {game_state.get('gold')}
-        Board: {[c.get('name') for c in game_state.get('board', [])]}
-        Items: {game_state.get('items')}
+Level: {game_state.get('level')}
+Gold: {game_state.get('gold')}
+Board: {[c.get('name') for c in game_state.get('board', [])]}
+Items: {game_state.get('items')}
+"""
 
-        Nên làm gì tiếp?
-        """
+        if question:
+            final_question = base_prompt + "\n\nUser hỏi: " + question
+        else:
+            final_question = base_prompt + "\n\nNên làm gì tiếp?"
 
-        docs = retrieve(question)
+        docs = retrieve(final_question)
         context = "\n".join(docs[:4])
 
-        answer = generate_answer(context, question)
+        answer = generate_answer(context, final_question)
 
         return {
             "game_state": game_state,
@@ -75,6 +79,7 @@ async def analyze_image(file: UploadFile = File(...)):
         }
 
     except Exception as e:
+        print("🔥 ERROR:", str(e))
         return {"error": str(e)}
 
 @app.post("/guide")

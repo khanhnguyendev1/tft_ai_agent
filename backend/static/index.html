@@ -155,7 +155,6 @@
       display: block;
       max-width: 100%;
     }
-
   </style>
 </head>
 
@@ -180,9 +179,8 @@
         </div>
 
         <div class="right-actions">
-          <button onclick="sendImage()">📷</button>
-          <button onclick="sendMessage()">Gửi</button>
-          <button onclick="askGuide()">🎮 Guide</button>
+          <button onclick="send()">Gửi</button>
+          <button onclick="askGuide()">🎮 Guide người mới</button>
         </div>
       </div>
 
@@ -211,6 +209,14 @@
     modal.onclick = () => {
       modal.style.display = "none";
     };
+
+    function scrollToBottom() {
+      const chatContainer = document.querySelector(".chat-container");
+      chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: "smooth"
+      });
+    }
     function addMessage(content, type, isImage = false) {
       const chat = document.getElementById("chat");
 
@@ -236,7 +242,7 @@
       }
 
       chat.appendChild(msg);
-      chat.scrollTop = chat.scrollHeight;
+      scrollToBottom();
     }
 
     function showTyping() {
@@ -248,38 +254,81 @@
       msg.innerText = "AI đang suy nghĩ...";
 
       chat.appendChild(msg);
-      chat.scrollTop = chat.scrollHeight;
+      scrollToBottom();
     }
+
+
 
     function removeTyping() {
       const el = document.getElementById("typing");
       if (el) el.remove();
     }
 
-    async function sendMessage() {
+    async function send() {
       const input = document.getElementById("input");
-      const text = input.value;
+      const text = input.value.trim();
 
-      if (!text) return;
+      const fileInput = document.getElementById("imageInput");
+      const file = fileInput.files[0];
 
-      addMessage(text, "user");
+      if (!text && !file) return;
+
+      // 🔥 hiển thị user message
+      if (text) addMessage(text, "user");
+
+      if (file) {
+        const imageURL = URL.createObjectURL(file);
+        addMessage(imageURL, "user", true);
+      }
+
       input.value = "";
-
       showTyping();
 
       try {
-        const res = await fetch(ASK_API, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ question: text })
-        });
+        let res, data;
 
-        const data = await res.json();
+        if (file) {
+          // 👉 gửi ảnh + text
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("question", text || "");
 
-        removeTyping();
-        typeEffect(data.answer || "Không có trả lời");
+          res = await fetch("/analyze-image", {
+            method: "POST",
+            body: formData
+          });
+
+          data = await res.json();
+
+          removeTyping();
+
+          const result =
+            "📊 Game State:\n" +
+            JSON.stringify(data.game_state, null, 2) +
+            "\n\n🔥 Strategy:\n" +
+            data.strategy;
+
+          typeEffect(result);
+
+          // reset file
+          fileInput.value = "";
+          document.getElementById("fileName").innerText = "";
+
+        } else {
+          // 👉 gửi text bình thường
+          res = await fetch("/ask", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ question: text })
+          });
+
+          data = await res.json();
+
+          removeTyping();
+          typeEffect(data.answer || "Không có trả lời");
+        }
 
       } catch (err) {
         removeTyping();
@@ -365,6 +414,7 @@
         if (i < text.length) {
           msg.innerText += text.charAt(i);
           i++;
+          scrollToBottom();
           setTimeout(typing, 10);
         }
       }
@@ -375,7 +425,7 @@
     document.getElementById("input").addEventListener("keypress", function (e) {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
-        sendMessage();
+        send();
       }
     });
     const imageInput = document.getElementById("imageInput");

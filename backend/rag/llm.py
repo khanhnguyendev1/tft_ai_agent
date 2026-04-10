@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-ENV_PATH = os.path.join(BASE_DIR, ".env")
+ENV_PATH = os.path.join(BASE_DIR, "backend\.env")
 
 print("ENV PATH:", ENV_PATH)
 
@@ -45,8 +45,9 @@ def generate_answer(context, question):
 
     beginner_keywords = [
         "mới chơi", "new", "beginner", "làm quen",
-        "chơi như nào", "hướng dẫn", "cách chơi",
-        "không biết chơi", "how to play"
+        "chơi như nào", "chơi sao", "cách chơi",
+        "hướng dẫn", "không biết chơi",
+        "how to play", "what is tft"
     ]
 
     is_beginner = any(k in query_lower for k in beginner_keywords)
