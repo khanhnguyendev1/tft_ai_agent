@@ -3,7 +3,16 @@ from PIL import Image
 import io
 import json
 
-genai.configure(api_key="***")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+ENV_PATH = os.path.join(BASE_DIR, "backend/.env")
+
+load_dotenv(ENV_PATH)
+
+api_key = os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    raise ValueError("Missing GOOGLE_API_KEY")
+
+genai.configure(api_key=api_key)
 
 model = genai.GenerativeModel("gemini-2.5-flash") 
 

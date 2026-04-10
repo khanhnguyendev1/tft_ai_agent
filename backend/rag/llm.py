@@ -3,41 +3,25 @@ import os
 from dotenv import load_dotenv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-ENV_PATH = os.path.join(BASE_DIR, "backend\.env")
+ENV_PATH = os.path.join(BASE_DIR, "backend/.env")
 
-print("ENV PATH:", ENV_PATH)
-
-load_dotenv(dotenv_path=ENV_PATH)
+load_dotenv(ENV_PATH)
 
 api_key = os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    raise ValueError("Missing GOOGLE_API_KEY")
 
-print("DEBUG API KEY:", api_key)
-
-genai.configure(api_key="***")
+genai.configure(api_key=api_key)
 
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 
-def clean_answer(answer):
-    bad_patterns = [
-        "Dựa trên",
-        "Theo dữ liệu",
-        "Theo thông tin",
-        "Trong context",
-        "Dựa vào"
-    ]
-
-    for bad in bad_patterns:
+def clean_answer(answer: str) -> str:
+    for bad in ["Dựa trên", "Theo dữ liệu", "Theo thông tin", "Trong context", "Dựa vào"]:
         answer = answer.replace(bad, "")
 
-    answer = answer.replace("**", "")
-    answer = answer.replace("* ", "- ")
-    answer = answer.replace("*", "")
-    answer = answer.replace("---", "")
-
-    answer = "\n".join([line.strip() for line in answer.split("\n") if line.strip()])
-
-    return answer.strip()
+    lines = [l.strip() for l in answer.split("\n") if l.strip()]
+    return "\n".join(lines)
 
 
 def generate_answer(context, question):
