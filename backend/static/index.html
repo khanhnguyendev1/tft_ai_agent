@@ -438,6 +438,27 @@
         fileName.innerText = "";
       }
     });
+    async function loadHistory() {
+      try {
+        const res = await fetch("/history");
+        const data = await res.json();
+
+        const chat = document.getElementById("chat");
+        chat.innerHTML = ""; // clear trước
+
+        data.forEach(item => {
+          addMessage(item.question, "user");
+          addMessage(item.answer, "bot");
+        });
+
+        scrollToBottom();
+
+      } catch (err) {
+        console.error("Load history failed");
+      }
+    }
+
+    window.onload = loadHistory;
   </script>
 
 </body>

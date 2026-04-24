@@ -4,6 +4,9 @@ from backend.rag.retriever import retrieve
 from backend.rag.llm import generate_answer
 from backend.vision.parser import parse_tft_image
 from backend.vision.postprocess import clean_game_state
+from backend.game_logic.analyzer import analyze_board
+from backend.rag.llm import agent_answer
+from backend.rag.retriever import build_query
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi import Form
@@ -50,31 +53,30 @@ async def analyze_image(
     try:
         contents = await file.read()
 
+        # 1. Vision
         game_state = parse_tft_image(contents)
         game_state = clean_game_state(game_state)
 
-        # 🔥 build prompt đúng
-        base_prompt = f"""
-Game state:
+        # 2. Analyze
+        analysis = analyze_board(game_state)
+        game_state.update(analysis)
 
-Level: {game_state.get('level')}
-Gold: {game_state.get('gold')}
-Board: {[c.get('name') for c in game_state.get('board', [])]}
-Items: {game_state.get('items')}
-"""
+        # 3. Build question
+        if not question:
+            question = "Nên làm gì tiếp?"
 
-        if question:
-            final_question = base_prompt + "\n\nUser hỏi: " + question
-        else:
-            final_question = base_prompt + "\n\nNên làm gì tiếp?"
+        query = build_query(game_state, question)
 
-        docs = retrieve(final_question)
+        # 4. RAG
+        docs = retrieve(query)
         context = "\n".join(docs[:4])
 
-        answer = generate_answer(context, final_question)
+        # 5. Agent
+        answer = agent_answer(game_state, context, question)
 
         return {
             "game_state": game_state,
+            "analysis": analysis,
             "strategy": answer
         }
 

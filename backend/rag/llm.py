@@ -23,8 +23,27 @@ def clean_answer(answer: str) -> str:
     lines = [l.strip() for l in answer.split("\n") if l.strip()]
     return "\n".join(lines)
 
+def agent_answer(state, context, question):
+    from backend.game_logic.analyzer import analyze_board, suggest_playstyle
 
-def generate_answer(context, question):
+    analysis = analyze_board(state)
+
+    main_trait = analysis.get("main_trait")
+
+    # 🔥 build query thông minh
+    if main_trait:
+        question = f"{question} (đang chơi {main_trait})"
+
+    answer = generate_answer(context, question)
+
+    # 🔥 thêm gợi ý logic
+    playstyle = suggest_playstyle(state)
+
+    final_answer = f"{answer}\n\nGợi ý thêm: {playstyle}"
+
+    return final_answer
+
+def generate_answer(context, question, state=None):
     query_lower = question.lower()
 
     beginner_keywords = [
@@ -65,14 +84,16 @@ def generate_answer(context, question):
     """
     else:
         prompt = f"""
-    Bạn là cao thủ TFT.
+        Bạn là cao thủ TFT.
 
-    CONTEXT:
-    {context}
+        STATE:
+        {state}
 
-    Câu hỏi:
-    {question}
+        CONTEXT:
+        {context}
 
+        Câu hỏi:
+        {question}
     ---
 
     Trả lời NGẮN:
@@ -99,3 +120,4 @@ def generate_answer(context, question):
     answer = response.text if response.text else "Không có phản hồi"
 
     return clean_answer(answer)
+

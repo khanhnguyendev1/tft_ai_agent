@@ -18,7 +18,6 @@ genai.configure(api_key=api_key)
 
 model = genai.GenerativeModel("gemini-2.5-flash") 
 
-
 def fallback_game_state():
     return {
         "level": 7,
